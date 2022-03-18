@@ -1,10 +1,13 @@
 import { DataTypes, Model } from 'sequelize';
+import { IUser } from '../../interfaces';
 import db from '.';
 
-class User extends Model {
+class User extends Model implements IUser {
   public id: number;
 
-  public userName: string;
+  public email: string;
+
+  public username: string;
 
   public password: string;
 
@@ -22,7 +25,13 @@ User.init({
     primaryKey: true,
   },
 
-  userName: {
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+
+  username: {
     type: DataTypes.STRING,
     allowNull: false,
   },

@@ -1,13 +1,16 @@
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
+import errorMiddleware from './middlewares/error.middleware';
+import Login from './routes/login.route';
 
 class App {
   public app: express.Express;
-  // ...
 
   constructor() {
     this.app = express();
+    this.app.use(bodyParser.json());
     this.config();
-    // ...
+    this.routes();
   }
 
   private config():void {
@@ -19,10 +22,13 @@ class App {
     };
 
     this.app.use(accessControl);
-    // ...
   }
 
-  // ...
+  private routes(): void {
+    this.app.use('/login', new Login().router);
+    this.app.use(errorMiddleware);
+  }
+
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   }
@@ -30,5 +36,5 @@ class App {
 
 export { App };
 
-// A execução dos testes de cobertura depende dessa exportação
+// Testes
 export const { app } = new App();
