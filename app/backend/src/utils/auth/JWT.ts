@@ -12,9 +12,13 @@ class JsonWebToken {
     return jwt.sign(payload, jwtToken, { algorithm: 'HS256' });
   }
 
-  public static async verifyToken(token: string): Promise<Omit<IUser, 'password'>> {
-    const jwtToken = await readJwtToken();
-    return jwt.verify(token, jwtToken, { algorithms: ['HS256'] }) as Omit<IUser, 'password'>;
+  public static async verifyToken(token: string): Promise<Omit<IUser, 'password'> | boolean> {
+    try {
+      const jwtToken = await readJwtToken();
+      return jwt.verify(token, jwtToken, { algorithms: ['HS256'] }) as Omit<IUser, 'password'>;
+    } catch (e) {
+      return false;
+    }
   }
 }
 

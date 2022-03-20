@@ -6,11 +6,12 @@ class Login {
 
   constructor() {
     this.router = express.Router();
-    this.postLogin();
+    this.routes();
   }
 
-  private postLogin(): void {
+  private routes(): void {
     this.router.post('/', UserController.loginValidation, UserController.login);
+    this.router.get('/validate', UserController.tokenValidation);
   }
 }
 

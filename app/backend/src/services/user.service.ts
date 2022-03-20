@@ -42,6 +42,21 @@ class User {
       },
     };
   }
+
+  public static async tokenValidation(token: string):
+  Promise<IService<IServiceError | string>> {
+    const validation = await Jwt.verifyToken(token) as Omit<IUser, 'password'>;
+    if (validation.role as string) {
+      return {
+        statusCode: 'OK',
+        payload: validation.role,
+      };
+    }
+    return {
+      statusCode: 'Unauthorized',
+      payload: { message: 'Invalid token' },
+    };
+  }
 }
 
 export default User;

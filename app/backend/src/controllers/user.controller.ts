@@ -23,6 +23,18 @@ class User {
       next(e);
     }
   };
+
+  public static tokenValidation = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { authorization } = req.headers;
+      const validation = await UserService.tokenValidation(authorization as string);
+      const { statusCode, payload } = validation;
+      return res.status(HTTPStatusCode[statusCode]).send(payload).end();
+    } catch (e) {
+      console.error(e);
+      next(e);
+    }
+  };
 }
 
 export default User;
