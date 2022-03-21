@@ -1,7 +1,7 @@
 import { IUser } from '../interfaces';
 import UserDB from '../database/models/User';
 
-class User {
+class UserModel {
   public static getUserByEmail(email: string): Promise<IUser> {
     return UserDB.findOne({
       where: {
@@ -11,4 +11,4 @@ class User {
   }
 }
 
-export default User;
+export default UserModel;
