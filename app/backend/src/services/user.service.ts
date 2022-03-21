@@ -4,8 +4,8 @@ import Jwt from '../utils/auth/JWT';
 import Password from '../utils/auth/Passwod';
 import { loginSchema } from '../validations/user.validation';
 
-class User {
-  public static loginValidaion(email: string, password: string):
+class UserService {
+  public static loginValidation(email: string, password: string):
   IService<IServiceError> | void {
     const { error } = loginSchema.validate({ email, password });
     if (error?.details[0].type === 'string.empty') {
@@ -43,20 +43,18 @@ class User {
     };
   }
 
-  public static async tokenValidation(token: string):
-  Promise<IService<IServiceError | string>> {
-    const validation = await Jwt.verifyToken(token) as Omit<IUser, 'password'>;
-    if (validation.role as string) {
+  public static validation(user: Omit<IUser, 'password'>): IService<string> {
+    if (!user.role) {
       return {
-        statusCode: 'OK',
-        payload: validation.role,
-      };
+        statusCode: 'Unauthorized',
+        payload: 'Invalid token',
+      } as IService<string>;
     }
     return {
-      statusCode: 'Unauthorized',
-      payload: { message: 'Invalid token' },
+      statusCode: 'OK',
+      payload: user.role,
     };
   }
 }
 
-export default User;
+export default UserService;

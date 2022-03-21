@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
+import { IUser } from '../interfaces';
 import UserService from '../services/user.service';
 import { HTTPStatusCode } from '../utils';
 
-class User {
+class UserController {
   public static loginValidation = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
-    const validation = UserService.loginValidaion(email, password);
+    const validation = UserService.loginValidation(email, password);
     if (validation) {
       const { statusCode, payload } = validation;
       return res.status(HTTPStatusCode[statusCode]).json(payload).end();
@@ -24,10 +25,10 @@ class User {
     }
   };
 
-  public static tokenValidation = async (req: Request, res: Response, next: NextFunction) => {
+  public static validation = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { authorization } = req.headers;
-      const validation = await UserService.tokenValidation(authorization as string);
+      const { user } = req;
+      const validation = UserService.validation(user as Omit<IUser, 'password'>);
       const { statusCode, payload } = validation;
       return res.status(HTTPStatusCode[statusCode]).send(payload).end();
     } catch (e) {
@@ -37,4 +38,4 @@ class User {
   };
 }
 
-export default User;
+export default UserController;

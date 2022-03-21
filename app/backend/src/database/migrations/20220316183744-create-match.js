@@ -42,6 +42,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable('matches');
+    queryInterface.dropTable('matchs');
   }
 };

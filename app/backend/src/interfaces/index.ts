@@ -23,6 +23,11 @@ export interface ILoginResponse {
   user: Omit<IUser, 'password'>;
 }
 
+export interface IClub {
+  id: number,
+  clubName: string,
+}
+
 export interface IHTTPStatusCode {
   readonly Continue: number,
   readonly SwitchingProtocols: number,

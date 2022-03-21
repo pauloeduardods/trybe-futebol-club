@@ -1,7 +1,8 @@
 import * as express from 'express';
 import UserController from '../controllers/user.controller';
+import Auth from '../middlewares/auth.middleware';
 
-class Login {
+class LoginRoute {
   public router: express.Router;
 
   constructor() {
@@ -11,8 +12,8 @@ class Login {
 
   private routes(): void {
     this.router.post('/', UserController.loginValidation, UserController.login);
-    this.router.get('/validate', UserController.tokenValidation);
+    this.router.get('/validate', Auth.tokenValidation, UserController.validation);
   }
 }
 
-export default Login;
+export default LoginRoute;
