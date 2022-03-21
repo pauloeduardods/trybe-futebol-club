@@ -28,6 +28,17 @@ export interface IClub {
   clubName: string,
 }
 
+export interface IMatch {
+  id: number,
+  homeTeam?: number,
+  awayTeam?: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+  inProgress: boolean,
+  homeClube?: IClub,
+  awayClube?: IClub,
+}
+
 export interface IHTTPStatusCode {
   readonly Continue: number,
   readonly SwitchingProtocols: number,

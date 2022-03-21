@@ -15,6 +15,20 @@ class ClubService {
       payload: clubs,
     };
   }
+  
+ static async getById(id: string): Promise<IService<IClub | IServiceError>> {
+    const club = await ClubModel.getById(id);
+    if (!club) {
+      return {
+        statusCode: 'NotFound',
+        payload: { message: 'No club found' },
+      };
+    }
+    return {
+      statusCode: 'OK',
+      payload: club,
+    };
+  }
 }
 
 export default ClubService;

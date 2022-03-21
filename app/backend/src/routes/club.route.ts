@@ -11,6 +11,7 @@ class ClubRoute {
 
   private routes(): void {
     this.router.get('/', ClubController.getAll);
+    this.router.get('/:id', ClubController.getById);
   }
 }
 
