@@ -1,6 +1,5 @@
 import * as express from 'express';
 import MatchContoller from '../controllers/match.controller';
-import UserController from '../controllers/user.controller';
 import Auth from '../middlewares/auth.middleware';
 
 class MatchRoute {
@@ -13,6 +12,7 @@ class MatchRoute {
 
   private routes(): void {
     this.router.get('/', MatchContoller.getAll);
+    this.router.post('/', Auth.tokenValidation, MatchContoller.matchValidation, MatchContoller.create)
   }
 }
 

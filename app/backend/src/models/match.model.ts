@@ -30,6 +30,23 @@ class MatchModel {
       },
     }) as unknown as Promise<IMatch[]>;
   }
+
+  public static async getById(id: number): Promise<IMatch | null> {
+    const match = await Match.findByPk(id, this.options);
+    return match;
+  }
+
+  public static async create(match: IMatch): Promise<number> {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = match;
+    const { id } = await Match.create({
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress,
+    });
+    return id as unknown as Promise<number>;
+  }
 }
 
 export default MatchModel;

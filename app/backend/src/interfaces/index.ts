@@ -29,7 +29,7 @@ export interface IClub {
 }
 
 export interface IMatch {
-  id: number,
+  id?: number,
   homeTeam?: number,
   awayTeam?: number,
   homeTeamGoals: number,
