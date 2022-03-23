@@ -16,7 +16,7 @@ class ClubService {
     };
   }
   
- static async getById(id: string): Promise<IService<IClub | IServiceError>> {
+  static async getById(id: number): Promise<IService<IClub | IServiceError>> {
     const club = await ClubModel.getById(id);
     if (!club) {
       return {

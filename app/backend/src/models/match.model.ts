@@ -1,3 +1,4 @@
+import { string } from 'joi';
 import { Op } from 'sequelize';
 import Club from '../database/models/Club';
 import Match from '../database/models/Match';
@@ -5,7 +6,7 @@ import { IMatch } from '../interfaces';
 
 class MatchModel {
   private static options = {
-    attributes: { exclude: ['homeTeam', 'awayTeam'] },
+    attributes: { exclude: ['homeTeam', 'awayTeam', 'home_team', 'away_team'] },
     include: [
       {
         model: Club,
@@ -20,13 +21,11 @@ class MatchModel {
     ],
   }
 
-  public static async getAll(inProgress: boolean): Promise<IMatch[]> {
+  public static async getAll(inProgress?: boolean): Promise<IMatch[]> {
     return Match.findAll({
       ...this.options,
       where: {
-        inProgress: {
-          [Op.or]: [true, inProgress],
-        },
+        inProgress: typeof inProgress === 'undefined' ? { [Op.or]: [true, false] } : inProgress,
       },
     }) as unknown as Promise<IMatch[]>;
   }
@@ -46,6 +45,18 @@ class MatchModel {
       inProgress,
     });
     return id as unknown as Promise<number>;
+  }
+
+  public static async update(match: IMatch): Promise<boolean> {
+    const { id, homeTeamGoals, awayTeamGoals, inProgress } = match;
+    const [ updated ] = await Match.update({
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress,
+    }, {
+      where: { id },
+    });
+    return updated !== 0;
   }
 }
 

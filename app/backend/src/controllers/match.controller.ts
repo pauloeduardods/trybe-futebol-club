@@ -5,8 +5,9 @@ import { HTTPStatusCode } from '../utils';
 class MatchContoller {
   public static getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const inProgress = req.query.inProgress === 'true';
-      const matchs = await MatchService.getAll(inProgress);
+      const { inProgress } = req.query;
+      const inProgressResult = typeof inProgress === 'string' ? JSON.parse(inProgress) : inProgress;
+      const matchs = await MatchService.getAll(inProgressResult as boolean | undefined);
       return res.status(HTTPStatusCode[matchs.statusCode]).json(matchs.payload).end();
     } catch (e) {
       console.error(e);
@@ -39,6 +40,18 @@ class MatchContoller {
       next(e);
     }
   }
+
+  public static finish = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const match = await MatchService.finish(+id);
+      return res.status(HTTPStatusCode[match.statusCode]).json(match.payload).end();
+    } catch (e) {
+      console.error(e);
+      next(e);
+    }
+  }
+
 }
 
 export default MatchContoller;

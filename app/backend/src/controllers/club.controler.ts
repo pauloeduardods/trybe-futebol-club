@@ -15,7 +15,7 @@ class ClubController {
 
   public static getById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const club = await ClubService.getById(req.params.id);
+      const club = await ClubService.getById(+req.params.id);
       return res.status(HTTPStatusCode[club.statusCode]).json(club.payload).end();
     } catch (e) {
       console.error(e);

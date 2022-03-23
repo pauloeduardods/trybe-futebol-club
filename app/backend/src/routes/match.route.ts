@@ -12,7 +12,8 @@ class MatchRoute {
 
   private routes(): void {
     this.router.get('/', MatchContoller.getAll);
-    this.router.post('/', Auth.tokenValidation, MatchContoller.matchValidation, MatchContoller.create)
+    this.router.post('/', Auth.tokenValidation, MatchContoller.matchValidation, MatchContoller.create);
+    this.router.patch('/:id/finish', Auth.tokenValidation, MatchContoller.finish);
   }
 }
 

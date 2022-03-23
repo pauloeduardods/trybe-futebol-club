@@ -6,7 +6,7 @@ class ClubModel {
     return Club.findAll();
   }
 
-  public static async getById(id: string): Promise<IClub | null> {
+  public static async getById(id: number): Promise<IClub | null> {
     return Club.findByPk(id);
   }
 }
