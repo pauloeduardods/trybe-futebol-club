@@ -19,17 +19,17 @@ class MatchService {
   }
 
   static async matchValidation(match: IMatch): Promise<IService<IServiceError> | void> {
+    if (match.homeTeam === match.awayTeam) {
+      return {
+        statusCode: 'Unauthorized',
+        payload: { message: 'It is not possible to create a match with two equal teams' }, 
+      };
+    }
     const { error } = matchSchema.validate(match);
     if (error?.details[0].type) {
       return {
         statusCode: 'Unauthorized',
         payload: { message: error.details[0].message }, 
-      };
-    }
-    if (match.homeTeam === match.awayTeam) {
-      return {
-        statusCode: 'Unauthorized',
-        payload: { message: 'It is not possible to create a match with two equal teams' }, 
       };
     }
     const homeTeam = await ClubModel.getById(match.homeTeam as number);
