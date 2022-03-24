@@ -17,8 +17,15 @@ class MatchContoller {
 
   public static matchValidation = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = req.body;
-      const validation = await MatchService.matchValidation({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: inProgress ?? true });
+      const { homeTeam, awayTeam, homeTeamGoals, homeGoals, awayTeamGoals, awayGoals, inProgress } = req.body;
+      const match = {
+        homeTeam,
+        awayTeam,
+        homeTeamGoals: +homeGoals || +homeTeamGoals || 0,
+        awayTeamGoals: +awayGoals || +awayTeamGoals || 0,
+        inProgress: inProgress ?? true,
+      }
+      const validation = await MatchService.matchValidation(match);
       if (validation) {
         const { statusCode, payload } = validation;
         return res.status(HTTPStatusCode[statusCode]).json(payload).end();
@@ -32,9 +39,16 @@ class MatchContoller {
 
   public static create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = req.body;
-      const match = await MatchService.create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress });
-      return res.status(HTTPStatusCode[match.statusCode]).json(match.payload).end();
+      const { homeTeam, awayTeam, homeTeamGoals, homeGoals, awayTeamGoals, awayGoals, inProgress } = req.body;
+      const match = {
+        homeTeam,
+        awayTeam,
+        homeTeamGoals: +homeGoals || +homeTeamGoals || 0,
+        awayTeamGoals: +awayGoals || +awayTeamGoals || 0,
+        inProgress: inProgress ?? true,
+      }
+      const matchCreated = await MatchService.create(match);
+      return res.status(HTTPStatusCode[matchCreated.statusCode]).json(matchCreated.payload).end();
     } catch (e) {
       console.error(e);
       next(e);

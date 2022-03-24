@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import errorMiddleware from './middlewares/error.middleware';
 import Login from './routes/login.route';
 import ClubRoute from './routes/club.route';
@@ -11,6 +12,7 @@ class App {
   constructor() {
     this.app = express();
     this.app.use(bodyParser.json());
+    this.app.use(cors());
     this.config();
     this.routes();
   }
@@ -18,7 +20,7 @@ class App {
   private config():void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT');
+      res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
       res.header('Access-Control-Allow-Headers', '*');
       next();
     };
