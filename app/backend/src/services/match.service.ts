@@ -1,7 +1,7 @@
 import { IMatch, IService, IServiceError } from '../interfaces';
 import ClubModel from '../models/club.model';
 import MatchModel from '../models/match.model';
-import matchSchema from '../validations/match.validation';
+import { matchSchema, updateMatchGoalsSchema } from '../validations/match.validation';
 
 class MatchService {
   static async getAll(inProgress?: boolean): Promise<IService<IMatch[] | IServiceError>> {
@@ -81,6 +81,35 @@ class MatchService {
     return {
       statusCode: 'OK',
       payload: match,
+    };
+  }
+
+  static async update(id: number, match: IMatch): Promise<IService<IMatch | IServiceError>> {
+    const validation = updateMatchGoalsSchema.validate(match)
+    if (validation.error?.details[0].type) {
+      return {
+        statusCode: 'BadRequest',
+        payload: { message: validation.error.details[0].message },
+      };
+    }
+    const oldMatch = await MatchModel.getById(id);
+    if (!oldMatch) {
+      return {
+        statusCode: 'NotFound',
+        payload: { message: 'Match not found' }, 
+      };
+    }
+    const newMatch = { id, homeTeamGoals: match.homeTeamGoals, awayTeamGoals: match.awayTeamGoals, inProgress: oldMatch.inProgress };
+    const updated = await MatchModel.update(newMatch);
+    if (!updated) {
+      return {
+        statusCode: 'BadRequest',
+        payload: { message: 'Match not updated' }, 
+      };
+    }
+    return {
+      statusCode: 'OK',
+      payload: newMatch,
     };
   }
 }

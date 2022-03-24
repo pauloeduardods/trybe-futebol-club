@@ -1,4 +1,3 @@
-import { string } from 'joi';
 import { Op } from 'sequelize';
 import Club from '../database/models/Club';
 import Match from '../database/models/Match';
@@ -31,7 +30,7 @@ class MatchModel {
   }
 
   public static async getById(id: number): Promise<IMatch | null> {
-    const match = await Match.findByPk(id, this.options);
+    const match = await Match.findByPk(id, this.options) ;
     return match;
   }
 

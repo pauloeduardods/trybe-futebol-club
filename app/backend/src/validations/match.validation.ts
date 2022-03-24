@@ -6,6 +6,11 @@ const homeTeamGoals = Joi.number().required();
 const awayTeamGoals = Joi.number().required();
 const inProgress = Joi.boolean().default(true);
 
+const updateMatchGoalsSchema = Joi.object({
+  homeTeamGoals,
+  awayTeamGoals,
+}).unknown(true);
+
 const matchSchema = Joi.object().keys({
   homeTeam,
   awayTeam,
@@ -14,4 +19,4 @@ const matchSchema = Joi.object().keys({
   inProgress,
 });
 
-export default matchSchema;
+export { matchSchema, updateMatchGoalsSchema };

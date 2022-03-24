@@ -66,6 +66,23 @@ class MatchContoller {
     }
   }
 
+  public static update = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const { homeTeamGoals, homeGoals, awayTeamGoals, awayGoals, inProgress } = req.body;
+      const match = {
+        homeTeamGoals: +homeGoals || +homeTeamGoals,
+        awayTeamGoals: +awayGoals || +awayTeamGoals,
+        inProgress: inProgress ?? true,
+      }
+      const matchUpdated = await MatchService.update(+id, match);
+      return res.status(HTTPStatusCode[matchUpdated.statusCode]).json(matchUpdated.payload).end();
+    } catch (e) {
+      console.error(e);
+      next(e);
+    }
+  }
+
 }
 
 export default MatchContoller;
