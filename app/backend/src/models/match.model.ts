@@ -18,7 +18,7 @@ class MatchModel {
         attributes: { exclude: ['id'] },
       },
     ],
-  }
+  };
 
   public static async getAll(inProgress?: boolean): Promise<IMatch[]> {
     return Match.findAll({
@@ -30,7 +30,7 @@ class MatchModel {
   }
 
   public static async getById(id: number): Promise<IMatch | null> {
-    const match = await Match.findByPk(id, this.options) ;
+    const match = await Match.findByPk(id, this.options);
     return match;
   }
 
@@ -48,7 +48,7 @@ class MatchModel {
 
   public static async update(match: IMatch): Promise<boolean> {
     const { id, homeTeamGoals, awayTeamGoals, inProgress } = match;
-    const [ updated ] = await Match.update({
+    const [updated] = await Match.update({
       homeTeamGoals,
       awayTeamGoals,
       inProgress,

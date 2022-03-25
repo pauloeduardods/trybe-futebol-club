@@ -10,7 +10,9 @@ class LeaderboardRoute {
   }
 
   private routes(): void {
-    this.router.get('/', LeaderboardController.getLeaderboard);
+    this.router.get('/', LeaderboardController.getAll);
+    this.router.get('/home', LeaderboardController.getHome);
+    this.router.get('/away', LeaderboardController.getAway);
   }
 }
 

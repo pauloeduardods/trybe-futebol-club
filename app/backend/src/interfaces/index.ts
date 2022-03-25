@@ -41,6 +41,8 @@ export interface IMatch {
   awayClube?: IClub,
 }
 
+export type TeamType = 'home' | 'away';
+
 export interface ILeaderboard {
   name: string;
   totalPoints: number;

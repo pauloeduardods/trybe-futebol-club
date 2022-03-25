@@ -1,8 +1,6 @@
 import Club from '../database/models/Club';
 import Match from '../database/models/Match';
-import { ILeaderboard, IMatch } from '../interfaces';
-
-type TeamType = 'home' | 'away';
+import { ILeaderboard, IMatch, TeamType } from '../interfaces';
 
 type TY = 'homeTeamGoals' | 'awayTeamGoals';
 
@@ -56,7 +54,7 @@ class LeaderboardModel {
     newAcc.goalsFavor += match[team];
     newAcc.goalsOwn += match[enemyTeam];
     newAcc.goalsBalance += match[team] - match[enemyTeam];
-    newAcc.efficiency = Math.floor((newAcc.totalPoints / (newAcc.totalGames * 3)) * 10000) / 100;
+    newAcc.efficiency = Math.round((newAcc.totalPoints / (newAcc.totalGames * 3)) * 10000) / 100;
     return newAcc;
   };
 
@@ -68,10 +66,12 @@ class LeaderboardModel {
   }
 
   private static sum(home: ILeaderboard, away: ILeaderboard): ILeaderboard {
+    const totalPoints = home.totalPoints + away.totalPoints;
+    const totalGames = home.totalGames + away.totalGames;
     const result = {
       name: '',
-      totalPoints: home.totalPoints + away.totalPoints,
-      totalGames: home.totalGames + away.totalGames,
+      totalPoints,
+      totalGames,
       totalVictories: home.totalVictories + away.totalVictories,
       totalDraws: home.totalDraws + away.totalDraws,
       totalLosses: home.totalLosses + away.totalLosses,
@@ -79,11 +79,21 @@ class LeaderboardModel {
       goalsOwn: home.goalsOwn + away.goalsOwn,
       goalsBalance: home.goalsBalance + away.goalsBalance,
       efficiency:
-        Math.floor(((
-          home.totalPoints + away.totalPoints)
-          / ((home.totalGames + away.totalPoints) * 3)) * 10000) / 100,
+        Math.round((totalPoints
+          / (totalGames * 3)) * 10000) / 100,
     };
     return result;
+  }
+
+  private static sortLeaderboard(leaderboard: ILeaderboard[]): ILeaderboard[] {
+    return leaderboard.sort((a, b) => {
+      if (a.totalPoints !== b.totalPoints) return b.totalPoints - a.totalPoints;
+      if (a.totalVictories !== b.totalVictories) return b.totalVictories - a.totalVictories;
+      if (a.goalsBalance !== b.goalsBalance) return b.goalsBalance - a.goalsBalance;
+      if (a.goalsFavor !== b.goalsFavor) return b.goalsFavor - a.goalsFavor;
+      if (a.goalsOwn !== b.goalsOwn) return b.goalsOwn - a.goalsOwn;
+      return 0;
+    });
   }
 
   public static async getLeaderboard(teamType?: TeamType): Promise<ILeaderboard[]> {
@@ -101,7 +111,7 @@ class LeaderboardModel {
       result.name = team.clubName;
       return result;
     });
-    return leaderboard;
+    return this.sortLeaderboard(leaderboard);
   }
 }
 
