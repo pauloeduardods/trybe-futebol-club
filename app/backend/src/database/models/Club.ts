@@ -3,10 +3,14 @@ import db from '.';
 import { IClub } from '../../interfaces';
 import Match from './Match';
 
-class Club extends Model implements IClub{
+class Club extends Model implements IClub {
   public id: number;
 
   public clubName: string;
+
+  public awayTeam: Match[];
+
+  public homeTeam: Match[];
 }
 
 Club.init({

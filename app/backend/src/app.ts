@@ -1,9 +1,10 @@
-import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
+import * as express from 'express';
 import errorMiddleware from './middlewares/error.middleware';
-import Login from './routes/login.route';
 import ClubRoute from './routes/club.route';
+import LeaderboardRoute from './routes/leaderboard.route';
+import Login from './routes/login.route';
 import MatchRoute from './routes/match.route';
 
 class App {
@@ -32,6 +33,7 @@ class App {
     this.app.use('/login', new Login().router);
     this.app.use('/clubs', new ClubRoute().router);
     this.app.use('/matchs', new MatchRoute().router);
+    this.app.use('/leaderboard', new LeaderboardRoute().router);
     this.app.use(errorMiddleware);
   }
 

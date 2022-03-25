@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { HTTPStatusCode } from '../utils';
+import { NextFunction, Request, Response } from 'express';
 import ClubService from '../services/club.service';
+import { HTTPStatusCode } from '../utils';
 
 class ClubController {
   public static getAll = async (_req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +21,7 @@ class ClubController {
       console.error(e);
       next(e);
     }
-  }
+  };
 }
 
 export default ClubController;

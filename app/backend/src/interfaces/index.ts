@@ -26,6 +26,8 @@ export interface ILoginResponse {
 export interface IClub {
   id: number,
   clubName: string,
+  awayTeam?: IMatch[],
+  homeTeam?: IMatch[],
 }
 
 export interface IMatch {
@@ -37,6 +39,19 @@ export interface IMatch {
   inProgress?: boolean,
   homeClube?: IClub,
   awayClube?: IClub,
+}
+
+export interface ILeaderboard {
+  name: string;
+  totalPoints: number;
+  totalGames: number;
+  totalVictories: number;
+  totalDraws: number;
+  totalLosses: number;
+  goalsFavor: number;
+  goalsOwn: number;
+  goalsBalance: number;
+  efficiency: number;
 }
 
 export interface IHTTPStatusCode {
