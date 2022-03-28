@@ -8,7 +8,6 @@ class ClubController {
       const clubs = await ClubService.getAll();
       return res.status(HTTPStatusCode[clubs.statusCode]).json(clubs.payload).end();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };
@@ -18,7 +17,6 @@ class ClubController {
       const club = await ClubService.getById(+req.params.id);
       return res.status(HTTPStatusCode[club.statusCode]).json(club.payload).end();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };

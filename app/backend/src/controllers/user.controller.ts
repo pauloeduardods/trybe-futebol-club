@@ -20,7 +20,6 @@ class UserController {
       const { statusCode, payload } = await UserService.login(email, password);
       return res.status(HTTPStatusCode[statusCode]).json(payload).end();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };
@@ -32,7 +31,6 @@ class UserController {
       const { statusCode, payload } = validation;
       return res.status(HTTPStatusCode[statusCode]).send(payload).end();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };

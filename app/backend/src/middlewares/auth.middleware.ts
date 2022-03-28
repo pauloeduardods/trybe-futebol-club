@@ -13,7 +13,6 @@ class Auth {
       req.user = payload as Omit<IUser, 'password'>;
       next();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   }

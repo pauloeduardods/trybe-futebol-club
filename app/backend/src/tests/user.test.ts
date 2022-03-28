@@ -26,6 +26,7 @@ describe('User Tests', () => {
     sinon
       .stub(jsonwebtoken, 'sign')
       .resolves('token');
+    // (jsonwebtoken.verify as sinon.SinonStub).resolves(ADMIN_PAYLOAD);
     sinon
       .stub(jsonwebtoken, 'verify')
       .resolves(ADMIN_PAYLOAD);
@@ -75,7 +76,6 @@ describe('User Tests', () => {
     chaiHttpResponse = await chai
       .request(app).get('/login/validate')
       .set('Authorization', 'token');
-    console.log(chaiHttpResponse);
     expect(chaiHttpResponse.status).to.equal(200);
     expect(chaiHttpResponse.text).to.equal('admin');
   });

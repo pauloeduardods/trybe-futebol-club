@@ -8,7 +8,6 @@ class LeaderboardController {
       const leaderboard = await LeaderboardService.getLeaderboard();
       return res.status(HTTPStatusCode[leaderboard.statusCode]).json(leaderboard.payload).end();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };
@@ -18,7 +17,6 @@ class LeaderboardController {
       const leaderboard = await LeaderboardService.getLeaderboard('home');
       return res.status(HTTPStatusCode[leaderboard.statusCode]).json(leaderboard.payload).end();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };
@@ -28,7 +26,6 @@ class LeaderboardController {
       const leaderboard = await LeaderboardService.getLeaderboard('away');
       return res.status(HTTPStatusCode[leaderboard.statusCode]).json(leaderboard.payload).end();
     } catch (e) {
-      console.error(e);
       next(e);
     }
   };

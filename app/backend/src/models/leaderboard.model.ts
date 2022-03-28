@@ -97,7 +97,7 @@ class LeaderboardModel {
   }
 
   public static async getLeaderboard(teamType?: TeamType): Promise<ILeaderboard[]> {
-    const teamsWithMatchs = await LeaderboardModel.getTeamsWithMatchs();
+    const teamsWithMatchs = await this.getTeamsWithMatchs();
     const leaderboard = teamsWithMatchs.map((team) => {
       let result;
       if (teamType) {
